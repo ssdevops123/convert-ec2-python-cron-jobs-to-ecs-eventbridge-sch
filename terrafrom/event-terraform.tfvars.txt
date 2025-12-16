@@ -1,0 +1,37 @@
+ecs_cluster_arn = "arn:aws:ecs:us-west-2:136279434049:cluster/Test-notfier"
+
+app_name           = "testing-pythonscript-2"
+environment        = "qa"
+vpc_id             = "vpc-0f3391e84c4f0ce79"  # This is DEV VPC
+
+private_subnet_ids = ["subnet-09a5205170294f953", "subnet-06e7f91ac149c8fc9"] # DEV Private Subnets
+
+github_repo = "Plethy/notifiers"
+github_branch  = "PRM-19296"
+
+recupe_dev_app_sg = ["sg-0919982972de5b550"]
+
+# sg1 = ["sg-0e3d07d97a68a2652"]c #api-ecs-backend-qa-db-sg
+# sg2 = ["sg-041f97fb3174597e0"]  #api-ecs-backend-qa-ecs-sg
+
+ecs_cpu    = 256  //deafult value= 256
+ecs_memory = 512  //default value= 512
+ 
+// ecs_env_file_s3_path = "s3://recupe-devops-qa/api-sandbox/env-variables/newdb.env"
+ecs_env_file_s3_path = "s3://recupe-devops-qa/notifiers-python-batch-files/batch.env"
+
+// recupe_dev_app_sg = ["sg-0c3d3c3032a0ff1e2"]# Copy Recupe Dev Application security groups to attach to ECS tasks
+github_connection_arn = "arn:aws:codestar-connections:us-west-2:136279434049:connection/bce23acd-20cf-4659-a6a1-60fe63d3dea3"
+ 
+scripts = [
+   {
+    
+    name     = "medication_notification"
+    schedule = "cron(*/5 * * * ? *)"
+    command  = ["python3", "/notifiers/notifier/push_notifiers/medication_notification.py"]
+  },
+   {
+    name     = "session_notification"
+    schedule = "cron(*/15 * * * ? *)"
+    command  = ["python3", "/notifiers/notifier/push_notifiers/session_notification.py"]
+  } ]
